@@ -88,10 +88,15 @@ RCT_CUSTOM_VIEW_PROPERTY(initialPosition, NSNumber *, Slider) {
             formatter.maximumIntegerDigits = 3;
             formatter.maximumFractionDigits = 0;
             
-            NSNumber *value = [NSNumber numberWithFloat: fraction * [json integerValue]];
+            int pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) * fraction;
+            
+            NSNumber *value = [NSNumber numberWithFloat: pos];
             NSString *string = [formatter stringFromNumber: value];
-
-            return [[NSMutableAttributedString alloc] initWithString:string];
+            
+            UIFont *font = [UIFont fontWithName:@"OpenSans-SemiBold" size:[self._textSize doubleValue]];
+            UIColor *color = [RNFluidicSlider ColorFromHexCode: self._bubbleTextColor];
+            NSDictionary *attrs = @{NSForegroundColorAttributeName: color, NSFontAttributeName: font };
+            return [[NSMutableAttributedString alloc] initWithString:string attributes: attrs];
         }];
         
         view.fraction = [self._initialPosition floatValue];
