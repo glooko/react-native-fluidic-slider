@@ -64,7 +64,7 @@ public class RNFluidicSlider extends ViewGroupManager<ViewGroup> {
             public Unit invoke(Float pos) {
                 _position = pos;
 
-                finalSlider.setBubbleText(String.valueOf((int) (_min + ((_max - _min) * _position))));
+                finalSlider.setBubbleText(String.valueOf((int) Math.rint(_min + ((_max - _min) * _position))));
 
                 return Unit.INSTANCE;
             }
@@ -75,7 +75,7 @@ public class RNFluidicSlider extends ViewGroupManager<ViewGroup> {
             public Unit invoke() {
                 int id = constraintLayout.getId();
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher().dispatchEvent(
-                        new px.fluidicslider.RNFluidicSliderEvent(id, "endTracking", _position)
+                        new px.fluidicslider.RNFluidicSliderEvent(id, "endTracking", (int) Math.rint(_min + ((_max - _min) * _position)))
                 );
 
                 return Unit.INSTANCE;
