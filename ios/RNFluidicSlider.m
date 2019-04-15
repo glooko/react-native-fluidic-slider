@@ -13,9 +13,10 @@ RCT_EXPORT_MODULE()
     Slider *slider = [[Slider alloc] init];
     
     [slider setDidBeginTracking:^(Slider * _Nonnull slider) {
+        float pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) *  self._fraction;
         NSDictionary *event = @{
                                 @"target": slider.reactTag,
-                                @"value": [[NSNumber numberWithFloat: self._fraction] stringValue],
+                                @"value": [[NSNumber numberWithFloat: round(pos)] stringValue],
                                 @"name": @"tap",
                                 @"event": @"beginTracking"
                                 };
@@ -23,9 +24,10 @@ RCT_EXPORT_MODULE()
     }];
     
     [slider setDidEndTracking:^(Slider * _Nonnull slider) {
+        float pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) *  self._fraction;
         NSDictionary *event = @{
                                 @"target": slider.reactTag,
-                                @"value": [[NSNumber numberWithFloat: self._fraction] stringValue],
+                                @"value": [[NSNumber numberWithFloat: round(pos)] stringValue],
                                 @"name": @"tap",
                                 @"event": @"endTracking"
                                 };
@@ -61,8 +63,9 @@ RCT_CUSTOM_VIEW_PROPERTY(max, NSNumber *, Slider) {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             formatter.maximumIntegerDigits = 3;
             formatter.maximumFractionDigits = 0;
+            formatter.roundingMode = NSNumberFormatterRoundHalfEven;
             
-            int pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) * fraction;
+            float pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) * fraction;
             
             NSNumber *value = [NSNumber numberWithFloat: pos];
             NSString *string = [formatter stringFromNumber: value];
@@ -87,8 +90,9 @@ RCT_CUSTOM_VIEW_PROPERTY(initialPosition, NSNumber *, Slider) {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             formatter.maximumIntegerDigits = 3;
             formatter.maximumFractionDigits = 0;
+            formatter.roundingMode = NSNumberFormatterRoundHalfEven;
             
-            int pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) * fraction;
+            float pos = [self._min intValue] + ([self._max intValue] - [self._min intValue]) * fraction;
             
             NSNumber *value = [NSNumber numberWithFloat: pos];
             NSString *string = [formatter stringFromNumber: value];
