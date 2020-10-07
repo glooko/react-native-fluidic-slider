@@ -20,7 +20,7 @@ RCT_EXPORT_MODULE()
                                 @"name": @"tap",
                                 @"event": @"beginTracking"
                                 };
-        [self.bridge.eventDispatcher sendInputEventWithName:@"topChange" body:event];
+        [self.bridge enqueueJSCall:@"RCTEventEmitter" method:@"receiveEvent" args:@[event[@"target"], RCTNormalizeInputEventName(@"topChange"), event] completion:NULL];
     }];
     
     [slider setDidEndTracking:^(Slider * _Nonnull slider) {
@@ -31,7 +31,7 @@ RCT_EXPORT_MODULE()
                                 @"name": @"tap",
                                 @"event": @"endTracking"
                                 };
-        [self.bridge.eventDispatcher sendInputEventWithName:@"topChange" body:event];
+        [self.bridge enqueueJSCall:@"RCTEventEmitter" method:@"receiveEvent" args:@[event[@"target"], RCTNormalizeInputEventName(@"topChange"), event] completion:NULL];
     }];
     
     return slider;
